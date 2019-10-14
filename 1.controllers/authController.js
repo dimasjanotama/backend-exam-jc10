@@ -94,7 +94,7 @@ module.exports = {
 
     deletecategories : (req, res)=>{
         var categoryId = req.params.categoryId
-        let sql = `DELETE FROM categories WHERE id = ${categoryId}`
+        let sql = `DELETE FROM categories WHERE id = '${categoryId}')`
         try {
             db.query(sql, (err, result)=>{
                 if(err) throw err
@@ -106,7 +106,7 @@ module.exports = {
     },
 
     moviesdropdown : (req,res)=>{
-        let sql = `SELECT nama FROM movies GROUP BY nama ORDER BY nama`
+        let sql = `SELECT id,nama FROM movies GROUP BY nama ORDER BY nama`
         db.query(sql, (err,result)=>{
             try {
                 if (err) throw err
@@ -118,7 +118,7 @@ module.exports = {
     },
 
     categoriesdropdown : (req,res)=>{
-        let sql = `SELECT nama FROM categories GROUP BY nama ORDER BY nama`
+        let sql = `SELECT id,nama FROM categories GROUP BY nama ORDER BY nama`
         db.query(sql, (err,result)=>{
             try {
                 if (err) throw err
@@ -130,7 +130,7 @@ module.exports = {
     },
 
     inputconnection : (req,res)=>{
-        let sql = `INSERT INTO movcat VALUES ('${req.body.inputMovieId}','${req.body.inputCategoryId}')`
+        let sql = `INSERT INTO movcat VALUES (0,'${req.body.inputMovieId}','${req.body.inputCategoryId}')`
         try {
             db.query(sql, (err, result)=>{
                 if(err) throw err
@@ -140,6 +140,34 @@ module.exports = {
             console.log(error);
         }
     },
+
+    displayconnection : (req,res)=>{
+        let sql = `SELECT movies.nama AS nama_movie, categories.nama AS nama_category FROM movcat 
+            JOIN movies ON movcat.idmovie=movies.id JOIN categories ON movcat.idcategory=categories.id`
+        try {
+            db.query(sql, (err, result)=>{
+                if(err) throw err
+                res.send(result)
+            })    
+        } catch (error) {
+            console.log(error);
+        }
+    },
+
+    deleteconnection : (req, res)=>{
+        var connectionId = req.params.connectionId
+        let sql = `DELETE FROM movcat WHERE id = ${connectionId}`
+        try {
+            db.query(sql, (err, result)=>{
+                if(err) throw err
+                res.send(result)
+            })    
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+
 
     
 

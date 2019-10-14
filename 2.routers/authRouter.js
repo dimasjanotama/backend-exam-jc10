@@ -29,6 +29,10 @@ router.get('/categoriesdropdown', authController.categoriesdropdown)
 
 router.post('/inputconnection', authController.inputconnection)
 
+router.get('/displayconnection', authController.displayconnection)
+
+router.delete('/deleteconnection/:connectionId', authController.deleteconnection)
+
 
 
 
